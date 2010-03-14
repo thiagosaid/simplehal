@@ -140,7 +140,7 @@ class SimpleHAL(object):
     # forward Markov chain
     output = self._get_markov_chain(self.forward, start)
     if output:
-      str = ' '.join(output[self.n:]) + ' [' + ' '.join(start) + ']'
+      str = ' '.join(output[self.n:]) #+ ' [' + ' '.join(start) + ']'
 
     # backward Markov chain
     start = list(start)
@@ -149,7 +149,7 @@ class SimpleHAL(object):
     output = self._get_markov_chain(self.backward, start)
     output.reverse()
     if output:
-      str = ' '.join(output) + '<>' + str
+      str = ' '.join(output) + ' ' + str
 
     if not str:
       return 'I am utterly speechless!'
