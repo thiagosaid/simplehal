@@ -118,7 +118,11 @@ class SimpleHAL(object):
     # that relavent to user input
 
     # find the starting point
-    start = random.choice(self.forward.keys())
+    try:
+      start = random.choice(self.forward.keys())
+    except IndexError:
+      return 'I am utterly speechless!'
+
     str = ''
 
     # forward Markov chain
@@ -136,7 +140,7 @@ class SimpleHAL(object):
       str = ' '.join(output) + '<>' + str
 
     if not str:
-      str = 'I am utterly speechless!'
+      return 'I am utterly speechless!'
 
     return str
  
