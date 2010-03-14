@@ -47,6 +47,7 @@ class SimpleHAL(object):
     if not input:
       return 'No input entered!'
 
+    # must learn before reply
     if learn:
       self._learn(input)
 
@@ -117,9 +118,20 @@ class SimpleHAL(object):
     # Figure out, how to search for the key
     # that relavent to user input
 
+    words = self._tokenize(input)
+    # find the possible keys that
+    # relavent to input
+    all_possible_keys = []
+    for word in words:
+      key = self._find_key(self.forward, word)
+      if key:
+        all_possible_keys.extend(key)
+
+    #print all_possible_keys
+
     # find the starting point
     try:
-      start = random.choice(self.forward.keys())
+      start = random.choice(all_possible_keys)
     except IndexError:
       return 'I am utterly speechless!'
 
@@ -177,6 +189,11 @@ class SimpleHAL(object):
 
     return output
 
+  # find key from input
+  def _find_key(self, dict, val):
+    """return the key of dictionary dic given the value"""
+    return [k for k, v in dict.iteritems() if val in v]
+
 
 # the main() function
 def main():
@@ -194,7 +211,7 @@ def main():
 
  for i in range(5):
    #bot.random_text()
-   print u"<<%d>> %s"%(i+1, hal.respond("test"))
+   print u"<<%d>> %s"%(i+1, hal.respond("brown fox"))
 
  #print hal.forward
  #print hal.backward

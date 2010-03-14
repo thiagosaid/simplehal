@@ -55,8 +55,8 @@ class JabberBot():
 
         # start megahal
         self._hal = simplehal.SimpleHAL()
-        if os.path.exists('hal.db'):
-            self._hal.load('hal.db')
+        if os.path.exists('jabberhal.db'):
+            self._hal.load('jabberhal.db')
 
         print "Bot started!"
 
@@ -147,7 +147,7 @@ def main():
     except KeyboardInterrupt: 
         print     
     finally:  
-        bot._hal.save('hal.db')
+        bot._hal.save('jabberhal.db')
 
 # if this file is run directly, call main.
 if __name__ == "__main__":
