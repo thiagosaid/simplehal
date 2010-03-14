@@ -148,6 +148,7 @@ def main():
         print     
     finally:  
         bot._hal.save('jabberhal.db')
+        print "Backed up data..."
 
 # if this file is run directly, call main.
 if __name__ == "__main__":
