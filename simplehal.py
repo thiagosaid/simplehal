@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # A simple implimentation of MegaHAL - Markov conversation simulator
-
-
+#
+#
 # Copyright (c) 2010 WptNgm@gmail.com
 #
 # Permission is hereby granted, free of charge, to any person
