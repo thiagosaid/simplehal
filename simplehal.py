@@ -100,7 +100,8 @@ class SimpleHAL(object):
     words = self._tokenize(text)
 
     if len(words) < self.n:
-      return
+      # fill to extend short word
+      words.extend( [' ']*(self.n-len(words)+1) )
 
     # add forward
     self._add_markov_chain(self.forward, words)
@@ -131,30 +132,40 @@ class SimpleHAL(object):
 
     # find the starting point
     try:
-      start = random.choice(all_possible_keys)
+      seed = random.choice(all_possible_keys)
     except IndexError:
       return 'I am utterly speechless!'
 
-    str = ''
+    # generate random sentence with seed
+    output = self._generate_sentence(seed)
 
-    # forward Markov chain
-    output = self._get_markov_chain(self.forward, start)
-    if output:
-      str = ' '.join(output[self.n:]) #+ ' [' + ' '.join(start) + ']'
-
-    # backward Markov chain
-    start = list(start)
-    start.reverse()
-    start = tuple(start)
-    output = self._get_markov_chain(self.backward, start)
-    output.reverse()
-    if output:
-      str = ' '.join(output) + ' ' + str
+    str = ' '.join(output)
 
     if not str:
       return 'I am utterly speechless!'
 
     return str
+
+  # generate Markov sentence
+  def _generate_sentence(self, seed):
+    
+    tmp = []
+    start = seed
+    # forward Markov chain
+    output = self._get_markov_chain(self.forward, start)
+    if output:
+      tmp = output[self.n:] #+ ' [' + ' '.join(start) + ']'
+
+    # backward Markov chain
+    start = list(seed)
+    start.reverse()
+    start = tuple(start)
+    output = self._get_markov_chain(self.backward, start)
+    output.reverse()
+    if output:
+      output.extend(tmp)
+
+    return output
  
 
   # add the Markov chain of the specific words
@@ -189,10 +200,11 @@ class SimpleHAL(object):
 
     return output
 
+
   # find key from input
   def _find_key(self, dict, val):
     """return the key of dictionary dic given the value"""
-    return [k for k, v in dict.iteritems() if val in v]
+    return [k for k, v in dict.iteritems() if val in k]
 
 
 # the main() function

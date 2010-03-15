@@ -135,6 +135,9 @@ class JabberBot():
         """Called when an iq is recieved, we just let the library handle it at the moment"""
         pass
 
+    def save(self): 
+        self._hal.save('jabberhal.db')
+
 # the main function
 def main():
     if len(sys.argv)<2:
@@ -147,7 +150,7 @@ def main():
     except KeyboardInterrupt: 
         print     
     finally:  
-        bot._hal.save('jabberhal.db')
+        bot.save()
         print "Backed up data..."
 
 # if this file is run directly, call main.
