@@ -99,7 +99,7 @@ class SimpleHAL(object):
 
     words = self._tokenize(text)
 
-    if len(words) < self.n:
+    if len(words) <= self.n:
       # fill to extend short word
       words.extend( [' ']*(self.n-len(words)+1) )
 
