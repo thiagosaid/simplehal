@@ -42,6 +42,8 @@ class JabberBot():
         self._con.RegisterHandler('message',self._messageCB)
         self._con.RegisterHandler('presence',self._presenceCB)
         self._con.RegisterHandler('iq',self._iqCB)
+
+        self._con.RegisterDisconnectHandler(self._disconnectCB)
         
         # Log in
         if self._con.auth(username,password):#,resource):
@@ -52,6 +54,12 @@ class JabberBot():
 
         # Request roster
         self._con.sendInitPresence()
+
+        # Set status
+        # online, on -> show='available'
+        # busy -> show='dnd'
+        # away, off, out, idel -> show='xa'
+        self._con.send(xmpp.Presence(priority=5, show='available', status="I'm more intelligent, talk to me!"))
 
         # start megahal
         self._hal = simplehal.SimpleHAL()
@@ -65,8 +73,13 @@ class JabberBot():
         while True:
             time.sleep(1)
             self._con.Process(1)
-            # If connection is broken, restore it
-            if not self._con.isConnected(): self._con.reconnectAndReauth()
+
+    
+    def _disconnectCB(self):
+        # If connection is broken, restore it
+        if not self._con.isConnected(): 
+            time.sleep(10)
+            self._con.reconnectAndReauth()
 
 
     def display(self, output, user):
